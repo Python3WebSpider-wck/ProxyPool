@@ -2,7 +2,7 @@ import asyncio
 import aiohttp
 from loguru import logger
 from proxypool.schemas import Proxy
-from proxypool.storages.redis import RedisClient
+from proxypool.storages.redis_client import RedisClient
 from proxypool.setting import TEST_TIMEOUT, TEST_BATCH, TEST_URL, TEST_VALID_STATUS, TEST_ANONYMOUS, \
     TEST_DONT_SET_MAX_SCORE
 from aiohttp import ClientProxyConnectionError, ServerDisconnectedError, ClientOSError, ClientHttpProxyError
@@ -67,6 +67,7 @@ class Tester(object):
                 self.redis.decrease(proxy)
                 logger.debug(f'proxy {proxy.string()} is invalid, decrease score')
 
+    # @logger.catch 是 loguru 库提供的一个装饰器，用于捕获函数或方法中发生的异常并自动记录下来
     @logger.catch
     def run(self):
         """

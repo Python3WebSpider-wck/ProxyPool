@@ -98,21 +98,21 @@ class Scheduler():
         global tester_process, getter_process, server_process
         try:
             logger.info('starting proxypool...')
+            # 测试模块
             if ENABLE_TESTER:
-                tester_process = multiprocessing.Process(
-                    target=self.run_tester)
+                tester_process = multiprocessing.Process(target=self.run_tester)
                 logger.info(f'starting tester, pid {tester_process.pid}...')
                 tester_process.start()
 
+            # 获取模块
             if ENABLE_GETTER:
-                getter_process = multiprocessing.Process(
-                    target=self.run_getter)
+                getter_process = multiprocessing.Process(target=self.run_getter)
                 logger.info(f'starting getter, pid {getter_process.pid}...')
                 getter_process.start()
 
+            # 接口模块
             if ENABLE_SERVER:
-                server_process = multiprocessing.Process(
-                    target=self.run_server)
+                server_process = multiprocessing.Process(target=self.run_server)
                 logger.info(f'starting server, pid {server_process.pid}...')
                 server_process.start()
 
@@ -129,12 +129,9 @@ class Scheduler():
             tester_process and tester_process.join()
             getter_process and getter_process.join()
             server_process and server_process.join()
-            logger.info(
-                f'tester is {"alive" if tester_process.is_alive() else "dead"}')
-            logger.info(
-                f'getter is {"alive" if getter_process.is_alive() else "dead"}')
-            logger.info(
-                f'server is {"alive" if server_process.is_alive() else "dead"}')
+            logger.info(f'tester is {"alive" if tester_process.is_alive() else "dead"}')
+            logger.info(f'getter is {"alive" if getter_process.is_alive() else "dead"}')
+            logger.info(f'server is {"alive" if server_process.is_alive() else "dead"}')
             logger.info('proxy terminated')
 
 

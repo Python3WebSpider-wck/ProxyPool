@@ -3,10 +3,10 @@ from proxypool.exceptions import PoolEmptyException
 from proxypool.schemas.proxy import Proxy
 from proxypool.setting import REDIS_CONNECTION_STRING, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB, REDIS_KEY, PROXY_SCORE_MAX, PROXY_SCORE_MIN, \
     PROXY_SCORE_INIT
+from proxypool.utils.proxy import is_valid_proxy, convert_proxy_or_proxies
 from random import choice
 from typing import List
 from loguru import logger
-from proxypool.utils.proxy import is_valid_proxy, convert_proxy_or_proxies
 
 
 REDIS_CLIENT_VERSION = redis.__version__
@@ -92,6 +92,8 @@ class RedisClient(object):
         :param proxy: proxy
         :return: if exists, bool
         """
+        # self.db.zscore(REDIS_KEY, proxy.string()) is None 结果为True, 表示不存在
+        # self.db.zscore(REDIS_KEY, proxy.string()) is not None 结果为False，表示存在
         return not self.db.zscore(REDIS_KEY, proxy.string()) is None
 
     def max(self, proxy: Proxy) -> int:
